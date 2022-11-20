@@ -1,0 +1,60 @@
+# Tomcat
+server:
+  tomcat:
+    # 服务器编码解码
+    uri-encoding: UTF-8
+  #服务器端口号
+  port: 8080
+  servlet:
+    #插入文件 ，登陆要在端口号后面加/paulitem
+    context-path: /paulitem
+
+spring:
+  #数据源（JDBC三要素：数据库驱动 Driver、数据库连接 url、数据库账号密码）
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/paulitem?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: 123456
+  servlet:
+    multipart:
+      #设置单次请求文件的总大小
+      max-file-size: 10MB
+      max-request-size: 10MB
+    #springboot的静态资源 路径
+    resources:
+      static-locations: classpath:static/,file:static/
+
+
+#mybatis增强版
+mybatis-plus:
+  #mapper映射文件 路径
+  mapper-locations: classpath*:mapper/*.xml
+  #mapper.xml文件中resultType的type或者paramterType会返回自定义entity
+  type-aliases-package: com.entity
+  #mybatis的全局配置
+  global-config:
+    #主键类型 0："数据库ID自增"，1：“用户输入ID”，2：“全局唯一ID（数字类型唯一ID）“,3：”全局唯一ID UUID“
+    #默认为1
+    id-type: 1
+    #字段策略 0：”忽略判断“，1：”非NULL判读“，2：”非空判断“
+    #Mybatis-Plus字段策略FieldStrategy的作用主要是在进行新增、更新时，根据配置的策略判断是否对实体对象的值进行空值判断，如果策略为字段不能为空，则不会对为空的字段进行赋值或更新。
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 动态 调试工具
+    refresh-mapper: true
+    #逻辑删除配置
+    logic-delete-value: -1
+    logic-not-delete-value: 0
+    #自定义SQL注入器
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    #是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN（下划线命名） 到经典 Java 属性名 aColumn（驼峰命名） 的类似映射。
+    map-underscore-to-camel-case: true
+    #开启Mybatis二级缓存
+    cache-enabled: false
+    #指定当结果集中值为 null 的时候是否调用映射对象的 Setter（Map 对象时为 put）方法，通常运用于有 Map.keySet() 依赖或 null 值初始化的情况
+    call-setters-on-nulls: true
+    #springboot 项目mybatis plus 设置 jdbcTypeForNull(oracle数据库配置JdbcType.NULL,默认是other)
+    jdbc-type-for-null: 'null'
